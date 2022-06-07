@@ -1,6 +1,8 @@
 #  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
 
-This is a small REST API using the Spring Boot framework, with REST documentation and interactive test page provided using the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)).  
+This is a small REST API using the Spring Boot framework, with REST documentation and interactive test page provided using the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)).  Metrics are exposed in prometheus format.
+
+## Domain Model
 
 The domain model is a simple product inventory.  You have a list of [Products](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/domain/Product.java), where each has:
 
@@ -9,7 +11,13 @@ The domain model is a simple product inventory.  You have a list of [Products](h
 * count (int, how many items are still available)
 * price (double, price of each item in dollars and cents)
 
-The [REST service](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/service/ProductController.java) allows you to:
+These objects are stored in an H2 in-memory database, using JPA for a simple [CrudRepository of Product](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/persistence/ProductRepository.java).  This database can be browsed with the h2-console web UI at:
+* http://localhost:8080/h2-console (jdbc url=jdbc:h2:mem:testdb; username=sa, password=<empty>)
+
+
+## REST Service
+
+The [REST service](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/service/ProductController.java) exposes the following resource endpoints:
 
 * GET /api/product - list all products
 * GET /api/product/{id} - fetch a product by id
@@ -20,6 +28,8 @@ The [REST service](https://github.com/fabianlee/spring-micro-with-actuator/blob/
 These services can be invoked from a simple REST client or curl/wget, but they are also self-documented and exposed from the integrated OpenAPI documentation (Swagger):
 
 * http://localhost:8080/swagger-ui/index.html
+
+## Prometheus Metrics
 
 In addition to the main RestController being offered on port 8080, the Actuator metrics are exposed on port 8081
 
