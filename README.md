@@ -11,17 +11,17 @@ The domain model is a simple product inventory.  You have a list of [Products](h
 
 The [REST service](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/service/ProductController.java) allows you to:
 
-* GET /api/product - list products
-* GET /api/product/{id} - list a specific unique product by id
+* GET /api/product - list all products
+* GET /api/product/{id} - fetch a product by id
 * POST /api/product - create a new product
-* PUT /api/product - create or updated a product
+* PUT /api/product - create or update a product
 * POST /api/product/{id}/sale - create a sale record for specific product
 
 These services can be invoked from a simple REST client or curl/wget, but they are also self-documented and exposed from the integrated OpenAPI documentation (Swagger):
 
 * http://localhost:8080/swagger-ui/index.html
 
-In addition to the main RestController being offered on port 8080, the Actuator metrics are exposed on port 8081 and provide:
+In addition to the main RestController being offered on port 8080, the Actuator metrics are exposed on port 8081
 
 * generic JVM metrics - http://localhost:8081/actuator/prometheus
 * [REST service specific metrics](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) - http://localhost:8081//actuator/prometheus-custom

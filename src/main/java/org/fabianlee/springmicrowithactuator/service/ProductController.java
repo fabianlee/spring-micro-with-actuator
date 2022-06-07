@@ -64,7 +64,7 @@ public class ProductController {
         }
     }
 
-    // for new objects, NOT idempotennt
+    // for new objects, NOT idempotent
     @PostMapping("/")
     public ResponseEntity<Product> saveProduct(@Validated @RequestBody Product product) {
         productRepository.save(product);
@@ -82,7 +82,8 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{id}/sale")
+    // create new sale record, NOT idempotent
+    @PostMapping("/{id}/sale")
     public ResponseEntity<Product> saleExecuted(@PathVariable(value="id") long id) {
         Optional<Product> product = productRepository.findById(id);
         
