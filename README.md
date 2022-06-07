@@ -1,15 +1,15 @@
 #  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
 
-This is a small REST API written with Spring Boot, with REST documentation and interactive test page provided using the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)).  
+This is a small REST API using the Spring Boot framework, with REST documentation and interactive test page provided using the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)).  
 
-The domain model is a simple product inventory.  You have a list of Products, each has:
+The domain model is a simple product inventory.  You have a list of [Products](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/domain/Product.java), where each has:
 
 * id (long, database unique identifier)
 * name (string, 120 chars in length describing item)
 * count (int, how many items are still available)
 * price (double, price of each item in dollars and cents)
 
-The REST service allows you to:
+The [REST service](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/service/ProductController.java) allows you to:
 
 * GET /api/product - list products
 * GET /api/product/{id} - list a specific unique product by id
@@ -24,7 +24,7 @@ These services can be invoked from a simple REST client or curl/wget, but they a
 In addition to the main RestController being offered on port 8080, the Actuator metrics are exposed on port 8081 and provide:
 
 * generic JVM metrics - http://localhost:8081/actuator/prometheus
-* REST service specific metrics - http://localhost:8081//actuator/prometheus-custom
+* [REST service specific metrics](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) - http://localhost:8081//actuator/prometheus-custom
 
 These values can be scraped using Prometheus, and configured to alert.  For example, when a product is reaching low levels of inventory.
 
