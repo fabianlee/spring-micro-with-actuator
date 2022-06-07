@@ -5,7 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.fabianlee.springmicrowithactuator.domain.Product;
 import org.fabianlee.springmicrowithactuator.persistence.ProductRepository;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.context.Context;
-import org.springframework.core.env.Environment;
 
 @Component
 @ControllerEndpoint(id = "prometheus-custom")
@@ -55,7 +55,7 @@ public class CustomPrometheusEndpoint {
         theContext.setVariable("foo", "bar");
 
         // map for final set of keys
-        HashMap<String,String> map = new HashMap<String,String>();
+        SortedMap<String,String> map = new TreeMap<String,String>();
         theContext.setVariable("metrics", map);
 
         // metrics from controller

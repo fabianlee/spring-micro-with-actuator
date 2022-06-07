@@ -49,7 +49,7 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(@Validated @RequestBody Product product) {
         Optional<Product> productInDB = productRepository.findById(product.getId());
 
-        if ( productInDB.isEmpty() ) {
+        if ( productInDB.isEmpty()) {
             logger.error("Need to create new Product: " + product.toString());
             productRepository.save(product);
             return ResponseEntity.ok().body(product);

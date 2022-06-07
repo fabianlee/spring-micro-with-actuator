@@ -68,12 +68,24 @@ curl https://start.spring.io/starter.zip \
 
 unzip $id.zip
 cd $id
-chmod +x ./mvnw
+chmod +x ./mvnw ./gradlew
 
+#
+# FOR GRADLE
+#
+./gradlew tasks
+./gradlew build jar
+# run application in one console
+./gradlew bootRun
+# run in another console to update when files changed
+./gradlew build --continuous
+
+
+#
+# FOR MAVEN
+#
 ./mvnw compile package
-
 ./mvnw spring-boot:run
-#java -jar target/$id-$version.jar
 ```
 
 
