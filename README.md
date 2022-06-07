@@ -34,13 +34,14 @@ These services can be invoked from a simple REST client or curl/wget, but they a
 In addition to the main RestController being offered on port 8080, the Actuator metrics are exposed on port 8081
 
 * generic JVM metrics - http://localhost:8081/actuator/prometheus
-* [REST service specific metrics](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) - http://localhost:8081//actuator/prometheus-custom
+* REST service level metrics - http://localhost:8081/actuator/prometheus-custom
 
-The service specific metrics at '/actuator/prometheus-custom' provide business level metrics that can be alerted on:
+The service level metrics at ['/actuator/prometheus-custom'](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java):
 
 * number_of_sales - how many items have been sold since the service started
 * total_revenue - the total dollar amount that has been sold using this service (any and all items)
 * low_inventory_count{id=%d,name="%s"} - [tagged metric](https://sysdig.com/blog/prometheus-metrics/) that shows objects whose count is less than 3
+* K8S_* - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
 
 These values can be scraped using Prometheus, and configured to alert.  For example, alerts could be emailed to staff when a product is reaching low levels of inventory so that it could reordered from Suppliers.
 
