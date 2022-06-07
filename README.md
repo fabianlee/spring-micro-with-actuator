@@ -12,7 +12,7 @@ The domain model is a simple product inventory.  You have a list of [Products](h
 * price (double, price of each item in dollars and cents)
 
 These objects are stored in an H2 in-memory database, using JPA for a simple [CrudRepository of Product](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/persistence/ProductRepository.java).  This database can be browsed with the h2-console web UI at:
-* http://localhost:8080/h2-console (jdbc url=jdbc:h2:mem:testdb; username=sa, password=<empty>)
+* http://localhost:8080/h2-console (jdbc url=jdbc:h2:mem:testdb; username=sa, password=&lt;empty&gt;)
 
 
 ## REST Service
