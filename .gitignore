@@ -12,7 +12,10 @@ target/
 .settings
 .springBeans
 .sts4-cache
+
+# CUSTOM added
 .mvn
+logs/
 
 ### IntelliJ IDEA ###
 .idea
