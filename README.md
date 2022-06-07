@@ -1,4 +1,4 @@
-##  Spring Boot REST API with OpenAPI docs and exported Prometheus metrics
+##  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
 
 This is a small REST API written with Spring Boot, with documentation and interactive tested provided using OpenAPI (Swagger).  
 
