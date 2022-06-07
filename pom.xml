@@ -48,25 +48,25 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- ADDED /actuator -->
+		<!-- ADDED to expose /actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		<!-- ADDED /actuator/prometheus path -->
+		<!-- ADDED to expose /actuator/prometheus -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-	<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+	<!-- Creates OpenAPI Swagger docs at /swagger-ui/index.html https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.9</version>
 		</dependency>
-		<!-- JPA entities for database persistence -->
+		<!-- JPA entities for database persistence of objects -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -94,7 +94,7 @@
 				</executions>
 			</plugin>
 
-			<!-- ensures minimum level of JVM -->
+			<!-- ensures minimum level of JVM, https://www.baeldung.com/maven-java-version -->
 			<plugin>    
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>

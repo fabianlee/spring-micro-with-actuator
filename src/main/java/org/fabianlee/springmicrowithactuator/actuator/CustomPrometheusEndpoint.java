@@ -76,7 +76,7 @@ public class CustomPrometheusEndpoint {
         for (Iterator<String> it=all_env.keySet().iterator(); it.hasNext();) {
             String envKey = it.next();
 
-            // only add env keys that we are intereted in
+            // only add env keys that we are interested in
             if ( envKey.startsWith("JAVA_") || envKey.startsWith("K8S_"))
                 map.put(envKey,all_env.get(envKey).toString());
         }
