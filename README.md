@@ -1,13 +1,32 @@
 #  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
 
-This is a small REST API written with Spring Boot, with documentation and interactive tested provided using OpenAPI (Swagger).  
+This is a small REST API written with Spring Boot, with REST documentation and interactive test page provided using the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)).  
 
-http://localhost:8080/swagger-ui/index.html
+The domain model is a simple product inventory.  You have a list of Products, each has:
 
-In addition to the main service being offered on port 8080, the Actuator metrics are exposed on port 8081 and provide:
+* id (long, database unique identifier)
+* name (string, 120 chars in length describing item)
+* count (int, how many items are still available)
+* price (double, price of each item in dollars and cents)
 
-* generic JVM metrics at http://localhost:8081/actuator/prometheus
-* REST service specific metrics at http://localhost:8081//actuator/prometheus-custom
+The REST service allows you to:
+
+* GET /api/product - list products
+* GET /api/product/{id} - list a specific unique product by id
+* POST /api/product - create a new product
+* PUT /api/product - create or updated a product
+* POST /api/product/{id}/sale - create a sale record for specific product
+
+These services can be invoked from a simple REST client or curl/wget, but they are also self-documented and exposed from the integrated OpenAPI documentation (Swagger):
+
+* http://localhost:8080/swagger-ui/index.html
+
+In addition to the main RestController being offered on port 8080, the Actuator metrics are exposed on port 8081 and provide:
+
+* generic JVM metrics - http://localhost:8081/actuator/prometheus
+* REST service specific metrics - http://localhost:8081//actuator/prometheus-custom
+
+These values can be scraped using Prometheus, and configured to alert.  For example, when a product is reaching low levels of inventory.
 
 
 ## Project initially created using Spring Intializer
