@@ -43,7 +43,7 @@ The service level metrics at ['/actuator/prometheus-custom'](https://github.com/
 * low_inventory_count{id=%d,name="%s"} - [tagged metric](https://sysdig.com/blog/prometheus-metrics/) that shows products whose count is less than 3
 * K8S_* - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
 
-These values can be scraped using Prometheus, and configured to alert.  For example, alerts could be emailed to staff when a product is reaching low levels of inventory so that it can reordered from Suppliers.
+These values can be scraped using Prometheus, and configured to alert.  For example, alerts could be emailed to staff when a product is reaching low levels of inventory so that it can be reordered from Suppliers.
 
 
 ## Project initially created using Spring Intializer
