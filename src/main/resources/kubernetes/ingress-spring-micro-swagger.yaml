@@ -1,0 +1,38 @@
+# used for manual deployments
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-micro-swagger
+  #namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+
+    # allows http without forcing redirect to ssl
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+    nginx.ingress.kubernetes.io/rewrite-target: /$1/$2
+
+spec:
+  tls:
+  - hosts: [ 'k3s.local' ]
+    # secret must be in same namespace
+    secretName: tls-credential
+  rules:
+
+  - host: k3s.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/v1/product/(swagger-ui)/(.*)"
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8080
+      - pathType: Prefix
+        path: "/v1/product/(v3/api-docs)/(swagger-config)"
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8080

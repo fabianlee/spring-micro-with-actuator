@@ -1,0 +1,33 @@
+# used for manual deployments
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-micro-actuator
+  #namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+
+    # allows http without forcing redirect to ssl
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+    # remove prefix
+    nginx.ingress.kubernetes.io/rewrite-target: /actuator/$2
+
+spec:
+  tls:
+  - hosts: [ 'k3s.local' ]
+    # secret must be in same namespace
+    secretName: tls-credential
+  rules:
+
+  - host: k3s.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/metrics(/|$)(.*)"
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8081
+
