@@ -42,7 +42,7 @@ public class CustomPrometheusEndpoint {
         final Context theContext = new Context();
 
         // static key
-        theContext.setVariable("foo", "bar");
+        theContext.setVariable("foo", "bar2");
 
         // map for final set of keys
         SortedMap<String,String> resultmap = new TreeMap<String,String>();

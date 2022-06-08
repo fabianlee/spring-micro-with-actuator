@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	// docker image build
+    id 'com.palantir.docker' version '0.22.1'
 }
 
 group = 'org.springframework.boot'
@@ -51,3 +53,24 @@ task reloadModule(type: Copy){
   include 'templates/**'
   include 'custom/**'
 }
+
+// takes templatized Dockerfile, places into buildDir
+task prepareDockerfileTemplate(type: Copy) {
+    from "src/main/resources/docker"
+    include "Dockerfile"
+    filter { it.replaceAll('<%=name%>', project.name) }
+    filter { it.replaceAll('<%=version%>', project.version) }
+    into "$buildDir"
+}
+// add explicit dependency, otherwise we get warning at console
+dockerPrepare.dependsOn prepareDockerfileTemplate
+
+// palantir plugin that handles docker build
+// https://github.com/palantir/gradle-docker
+docker {
+	//dependsOn prepareDockerfileTemplate
+    name "fabianlee/${project.name}:${project.version}"
+	files "$buildDir/libs/${project.name}-${project.version}.jar"
+    dockerfile file("$buildDir/Dockerfile")
+}
+

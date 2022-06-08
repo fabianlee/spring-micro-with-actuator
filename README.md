@@ -68,6 +68,24 @@ These values can be scraped using Prometheus, and configured to alert.  For exam
 ./mvnw spring-boot:run
 ```
 
+## Building Docker image and running locally
+
+```
+# build docker image locally
+./gradlew docker -d
+
+# run in foreground
+docker run -it -p 8080:8080 --rm fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT /bin/bash
+
+# run in background
+docker run -d -p 8080:8080 --rm --name spring-micro-with-actuator fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT
+
+# inside of container
+docker exec -it spring-micro-with-actuator /bin/bash
+
+# stop container
+docker stop spring-micro-with-actuator
+```
 
 ## Project initially created using Spring Intializer
 

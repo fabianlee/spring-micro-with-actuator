@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
-@RequestMapping("/api/product")
+@RequestMapping("/api")
 public class ProductController {
 
     Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -49,20 +49,20 @@ public class ProductController {
 
     @Operation(summary = "get list of products")
     @ApiResponse(responseCode = "200", description = "list returned")
-    @GetMapping(value = "/")
+    @GetMapping(value = "/product")
     public Iterable<Product> findAllProducts() {
         return productService.findAll();
     }
 
-    // for new or updates to existing, is idempotent
-    @PutMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "create or update product")
+    @PutMapping(value = "/product", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> updateProduct(@Validated @RequestBody Product product) {
         productService.saveOrUpdate(product);
         return ResponseEntity.ok().body(product);
     }
 
-    // for new objects, NOT idempotent
-    @PostMapping("/")
+    @Operation(summary = "create product")
+    @PostMapping("/product")
     public ResponseEntity<Product> saveProduct(@Validated @RequestBody Product product) {
         productService.save(product);
         return ResponseEntity.ok().body(product);
@@ -71,7 +71,7 @@ public class ProductController {
     @Operation(summary = "get product by id")
     @ApiResponse(responseCode = "200", description = "Product returned")
     @ApiResponse(responseCode = "404", description = "Product not found")
-    @GetMapping("/{id}")
+    @GetMapping("/product/{id}")
     public ResponseEntity<Product> findProductById(@PathVariable(value = "id") long id) {
         Optional<Product> product = productService.getProductById(id);
 
@@ -83,7 +83,8 @@ public class ProductController {
     }
 
     // create new sale record, NOT idempotent
-    @PostMapping("/{id}/sale")
+    @Operation(summary = "create new record of sale, not idempotent")
+    @PostMapping("/product/{id}/sale")
     public ResponseEntity<Product> saleExecuted(@PathVariable(value = "id") long id) {
         boolean isSold = productService.sold(id);
         Optional<Product> product = productService.getProductById(id);
