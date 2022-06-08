@@ -25,7 +25,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// CUSTOM
-	// versions retrieved using original maven: ./mvnw dependency:tree
+	// versions discovered using original maven: ./mvnw dependency:tree
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus:1.9.0'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.0'
@@ -40,7 +40,7 @@ tasks.named('test') {
 task reload(type: Copy) {
     from 'src/main/resources'
     into 'build/resources/main'
-   include 'static/**'
+    include 'static/**'
     include 'templates/**'
     include 'custom/**'
 }

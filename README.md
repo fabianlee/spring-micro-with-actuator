@@ -46,30 +46,9 @@ The service level metrics at ['/actuator/prometheus-custom'](https://github.com/
 These values can be scraped using Prometheus, and configured to alert.  For example, alerts could be emailed to staff when a product is reaching low levels of inventory so that it can be reordered from Suppliers.
 
 
-## Project initially created using Spring Intializer
-
-[Spring Initializer Web UI](https://start.spring.io/)
+## Running Application on local development server
 
 ```
-id=spring-micro-with-actuator
-artifact_id="${id//-}"
-SpringAppClassName=SpringMicroMain
-version="0.0.2-SNAPSHOT"
-curl https://start.spring.io/starter.zip \
-    -d dependencies=web,prometheus,devtools,actuator,thymeleaf,h2,data-jpa \
-    -d javaVersion=11 \
-    -d bootVersion=2.7.0 \
-    -d groupId=org.fabianlee \
-    -d artifactId=$artifact_id \
-    -d name=$SpringAppClassName \
-    -d baseDir=$id \
-    -d version=$version \
-    -o $id.zip
-
-unzip $id.zip
-cd $id
-chmod +x ./mvnw ./gradlew
-
 #
 # FOR GRADLE
 #
@@ -88,6 +67,32 @@ chmod +x ./mvnw ./gradlew
 ./mvnw spring-boot:run
 ```
 
+
+## Project initially created using Spring Intializer
+
+[Spring Initializer Web UI](https://start.spring.io/)
+
+```
+id=spring-micro-with-actuator
+artifact_id="${id//-}"
+SpringAppClassName=SpringMicroMain
+version="0.0.2-SNAPSHOT"
+curl https://start.spring.io/starter.zip \
+    -d type=maven-project|gradle-project
+    -d dependencies=web,prometheus,devtools,actuator,thymeleaf,h2,data-jpa \
+    -d javaVersion=11 \
+    -d bootVersion=2.7.0 \
+    -d groupId=org.fabianlee \
+    -d artifactId=$artifact_id \
+    -d name=$SpringAppClassName \
+    -d baseDir=$id \
+    -d version=$version \
+    -o $id.zip
+
+unzip $id.zip
+cd $id
+chmod +x ./mvnw ./gradlew
+```
 
 ## References
 

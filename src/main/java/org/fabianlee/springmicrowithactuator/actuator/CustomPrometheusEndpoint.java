@@ -39,9 +39,6 @@ public class CustomPrometheusEndpoint {
     @Autowired
     ProductController productController;
 
-    //@Autowired
-    //private Environment env;
-
     @Autowired
     private ProductRepository productRepository;
 
