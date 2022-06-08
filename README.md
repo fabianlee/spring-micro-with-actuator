@@ -53,6 +53,7 @@ These values can be scraped using Prometheus, and configured to alert.  For exam
 # FOR GRADLE
 #
 ./gradlew tasks
+./gradlew --refresh-dependencies
 ./gradlew build jar
 # run application in one console
 ./gradlew bootRun

@@ -1,4 +1,7 @@
-package org.fabianlee.springmicrowithactuator.domain;
+/**
+ * Product POJO
+ */
+package org.fabianlee.springmicrowithactuator.product;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
