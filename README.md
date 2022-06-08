@@ -60,10 +60,6 @@ These values can be scraped using Prometheus, and configured to alert.  For exam
 # run in another console to auto-update when files changed
 ./gradlew build --continuous
 
-# to run layered classes
-cd build
-java -cp .:classes:./libs/spring-micro-with-actuator-0.0.2-SNAPSHOT.jar org.springframework.boot.loader.JarLauncher
-
 
 #
 # FOR MAVEN
@@ -76,18 +72,25 @@ java -cp .:classes:./libs/spring-micro-with-actuator-0.0.2-SNAPSHOT.jar org.spri
 
 ```
 # build docker image locally
-./gradlew docker -d
+./gradlew jar docker
 
 # run in foreground
-docker run -it -p 8080:8080 --rm fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT /bin/bash
+./gradlew dockerRun
+OR
+docker run -it -p 8080:8080 -p 8081:8081 --rm fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT /bin/bash
 
 # run in background
-docker run -d -p 8080:8080 --rm --name spring-micro-with-actuator fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT
+docker run -d -p 8080:8080 -p 8081:8081 --rm --name spring-micro-with-actuator fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT
 
-# inside of container
+# create new running container, but go to shell instead of server being run
+docker run -it --rm --entrypoint /bin/bash fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT
+
+# get inside of daemonized container where server is being run
 docker exec -it spring-micro-with-actuator /bin/bash
 
 # stop container
+./gradlew dockerStop
+OR
 docker stop spring-micro-with-actuator
 ```
 

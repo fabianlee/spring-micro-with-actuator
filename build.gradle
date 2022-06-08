@@ -2,8 +2,10 @@ plugins {
 	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	// docker image build
-    id 'com.palantir.docker' version '0.22.1'
+	// docker image build and run, https://tomgregory.com/automating-docker-builds-with-gradle/
+	// https://plugins.gradle.org/plugin/com.palantir.docker
+    id 'com.palantir.docker' version '0.33.0'
+	id "com.palantir.docker-run" version "0.33.0"
 }
 
 group = 'org.springframework.boot'
@@ -68,8 +70,17 @@ dockerPrepare.dependsOn prepareDockerfileTemplate
 // palantir plugin that handles docker build
 // https://github.com/palantir/gradle-docker
 docker {
-    name "fabianlee/${project.name}:${project.version}"
+    name "fabianlee/${project.name}:${project.version}" 
 	files "$buildDir/libs/${project.name}-${project.version}.jar"
     dockerfile file("$buildDir/Dockerfile")
 }
 
+// https://plugins.gradle.org/plugin/com.palantir.docker-run
+// https://github.com/palantir/gradle-docker
+dockerRun {
+    name "${project.name}"
+    image "fabianlee/${project.name}:${project.version}"
+    ports '8080:8080','8081:8081'
+    clean true
+	daemonize false
+}
