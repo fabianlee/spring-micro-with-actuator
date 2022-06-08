@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-micro-with-actuator
+  # allow for override: kubectl -n <ns> apply ...
+  #namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: spring-micro-with-actuator
+  # kubectl scale --replicas=x deployment/gunicorn-hello-world-web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spring-micro-with-actuator
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+
+      containers:
+      - name: spring-micro-with-actuator
+        image: fabianlee/spring-micro-with-actuator:${VERSION}
+        imagePullPolicy: Always
+
+        # resource limits
+        resources:
+          requests:
+            memory: "2048Mi"
+            cpu: "1000m" # one vcpu
+          limits:
+            memory: "4096Mi"
+            cpu: "2000m" # two vcpu
+
+        env:
+
+        # if you needed to override 'dev' default profile in application.properties
+        #- name: spring.profiles.active
+        #  value: prod
+
+          # pulling pod fields
+        - name: K8S_node_name
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: K8S_namespace
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+
+        # default message
+        - name: JAVA_MSG
+          value: "I wuz here"
+
+        # check for lifetime liveness, restarts if dead
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+            #path: /
+            #port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+
+        # check for initial readiness
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+            #path: /
+            #port: 8080
+          initialDelaySeconds: 20 
+          periodSeconds: 10
+
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-micro-with-actuator
+  #namespace: default
+  labels:
+    app: spring-micro-with-actuator
+spec:
+  ports:
+  # port=available to other containers
+  - port: 8080
+    name: http
+    # targetPort=exposed from inside container
+    targetPort: 8080
+    protocol: TCP
+  - port: 8081
+    name: http-actuator
+    # targetPort=exposed from inside container
+    targetPort: 8081
+    protocol: TCP
+  selector:
+    app: spring-micro-with-actuator

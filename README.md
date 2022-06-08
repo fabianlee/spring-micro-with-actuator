@@ -72,7 +72,9 @@ These values can be scraped using Prometheus, and configured to alert.  For exam
 
 ```
 # build docker image locally
-./gradlew jar docker
+./gradlew bootJar docker
+# push to Docker Hub
+./gradlew bootJar dockerPush
 
 # run in foreground
 ./gradlew dockerRun
