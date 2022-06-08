@@ -86,6 +86,7 @@ public class ProductController {
     @Operation(summary = "create new record of sale, not idempotent")
     @PostMapping("/{id}/sale")
     public ResponseEntity<Product> saleExecuted(@PathVariable(value = "id") long id) {
+        logger.error("going to do sale");
         boolean isSold = productService.sold(id);
         Optional<Product> product = productService.getProductById(id);
 

@@ -57,7 +57,7 @@ task reloadModule(type: Copy){
 // takes templatized Dockerfile, places into buildDir
 task prepareDockerfileTemplate(type: Copy) {
     from "src/main/resources/docker"
-    include "Dockerfile"
+    include "Dockerfile*"
     filter { it.replaceAll('<%=name%>', project.name) }
     filter { it.replaceAll('<%=version%>', project.version) }
     into "$buildDir"
@@ -68,7 +68,6 @@ dockerPrepare.dependsOn prepareDockerfileTemplate
 // palantir plugin that handles docker build
 // https://github.com/palantir/gradle-docker
 docker {
-	//dependsOn prepareDockerfileTemplate
     name "fabianlee/${project.name}:${project.version}"
 	files "$buildDir/libs/${project.name}-${project.version}.jar"
     dockerfile file("$buildDir/Dockerfile")

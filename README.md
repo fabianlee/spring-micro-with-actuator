@@ -54,11 +54,15 @@ These values can be scraped using Prometheus, and configured to alert.  For exam
 #
 ./gradlew tasks
 ./gradlew --refresh-dependencies
-./gradlew build jar
+./gradlew build -x test
 # run application in one console
 ./gradlew bootRun
-# run in another console to update when files changed
+# run in another console to auto-update when files changed
 ./gradlew build --continuous
+
+# to run layered classes
+cd build
+java -cp .:classes:./libs/spring-micro-with-actuator-0.0.2-SNAPSHOT.jar org.springframework.boot.loader.JarLauncher
 
 
 #
