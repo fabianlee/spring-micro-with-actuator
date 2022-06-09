@@ -99,16 +99,14 @@ docker stop spring-micro-with-actuator
 ## Deploy on Kubernetes
 
 ```
-export VERSION=0.0.2-SNAPSHOT
 cd src/main/resources/kubernetes
+export VERSION=0.0.2-SNAPSHOT
 envsubst < deployment-spring-micro-with-actuator.yaml | kubectl apply -f -
-
-kubectl describe deployment spring-micro-with-actuator
+kubectl get deployment spring-micro-with-actuator
 
 kubectl apply -f spring-micro-rest.yaml
-kubectl apply -f spring-micro-swagger.yaml
 kubectl apply -f spring-micro-actuator.yaml
-
+kubectl get ingress
 ```
 
 ## Project initially created using Spring Intializer
