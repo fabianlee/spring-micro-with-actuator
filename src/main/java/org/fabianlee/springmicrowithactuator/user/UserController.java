@@ -18,7 +18,7 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Operation(summary = "get list of products")
+    @Operation(summary = "get list of users")
     @ApiResponse(responseCode = "200", description = "list returned")
     @GetMapping
     public Iterable<User> findAllUsers() {

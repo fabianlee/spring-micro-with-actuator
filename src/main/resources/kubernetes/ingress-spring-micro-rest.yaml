@@ -10,7 +10,7 @@ metadata:
     # allows http without forcing redirect to ssl
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
-    nginx.ingress.kubernetes.io/rewrite-target: /api/$2
+    #nginx.ingress.kubernetes.io/rewrite-target: /api/$2
 
 spec:
   tls:
@@ -22,8 +22,26 @@ spec:
   - host: k3s.local
     http:
       paths:
+
+      // for main REST API controllers
       - pathType: Prefix
-        path: "/api/v1(/|$)(.*)"
+        path: /api
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8080
+
+      // for OpenDocs Swagger UI
+      - pathType: Prefix
+        path: /swagger-ui
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8080
+      - pathType: Prefix
+        path: /v3/api-docs
         backend:
           service:
             name: spring-micro-with-actuator
