@@ -5,7 +5,8 @@ metadata:
     # specified as matchLabel in 'Prometheus' CRD
     # this ServiceMonitor will not be found by prometheus unless it matches
     release: prom-stack
-  name: spring-rest
+  name: spring-rest-micro-with-actuator
+  # does not need to be in 'prom' namespace, works fine in default
   namespace: default
 spec:
   endpoints:
@@ -15,6 +16,7 @@ spec:
     port: http-actuator
     scheme: http
     scrapeTimeout: 60s
+
   # custom Actuator metrics enabled by adding 'micrometer-registry-prometheus' dependency to Spring Boot
   # then creating CustomPrometheusEndpoint Bean as ControllerEndpoint
   - path: /actuator/prometheus-custom
