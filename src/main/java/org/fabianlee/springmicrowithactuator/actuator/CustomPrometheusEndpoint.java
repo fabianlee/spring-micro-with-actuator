@@ -1,3 +1,10 @@
+/**
+ * Custom metrics for REST service
+ * 
+ * Metrics can be manually checked for syntax using promtool
+ * kubectl exec -it -n prom statefulset/prometheus-prom-stack-kube-prometheus-prometheus -c prometheus -- sh
+  * echo -e "mymetric 1.0\nanother 2.0" | promtool check metrics
+ */
 package org.fabianlee.springmicrowithactuator.actuator;
 
 import java.text.DecimalFormat;
@@ -35,14 +42,14 @@ public class CustomPrometheusEndpoint {
     @Autowired
     private ProductRepository productRepository;
 
-    DecimalFormat decimalFormat = new DecimalFormat("#####.00");
+    DecimalFormat decimalFormat = new DecimalFormat("####0.00");
 
     @GetMapping(value="/", produces = MediaType.TEXT_PLAIN_VALUE)
     public @ResponseBody String customEndPoint(){
         final Context theContext = new Context();
 
-        // static key
-        theContext.setVariable("foo", "bar2");
+        // hardcoded metric
+        theContext.setVariable("foo", "2.2");
 
         // map for final set of keys
         SortedMap<String,String> resultmap = new TreeMap<String,String>();
@@ -56,7 +63,7 @@ public class CustomPrometheusEndpoint {
         Collection<Product> productLowCount = productRepository.findProductWithLowInventoryCount();
         for ( Product p:productLowCount) {
             resultmap.put(
-                String.format("low_inventory_count{id=%d,name=\"%s\"}",p.getId(),p.getName()),
+                String.format("low_inventory_count{id=\"%d\",name=\"%s\"}",p.getId(),p.getName()),
                 "" + p.getCount()
                 );
         }
@@ -67,8 +74,11 @@ public class CustomPrometheusEndpoint {
             String envKey = it.next();
 
             // only add env keys that we are interested in
-            if ( envKey.startsWith("JAVA_") || envKey.startsWith("K8S_"))
-                resultmap.put(envKey,all_env.get(envKey).toString());
+            // metric values in prometheus are always numbers (not string values)
+            // so use label to capture string
+            // https://github.com/prometheus/prometheus/issues/2227
+    if ( envKey.startsWith("JAVA_") || envKey.startsWith("K8S_"))
+                resultmap.put(String.format("%s{label=\"%s\"}",envKey,all_env.get(envKey).toString()),"0.0");
         }
 
         // render final set of prometheus formatted key/values using Thymeleaf text template
