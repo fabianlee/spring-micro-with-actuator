@@ -15,14 +15,14 @@ spec:
   - path: /actuator/prometheus
     port: http-actuator
     scheme: http
-    scrapeTimeout: 60s
+    interval: 60s
 
   # custom Actuator metrics enabled by adding 'micrometer-registry-prometheus' dependency to Spring Boot
   # then creating CustomPrometheusEndpoint Bean as ControllerEndpoint
   - path: /actuator/prometheus-custom
     port: http-actuator
     scheme: http
-    scrapeTimeout: 15s
+    interval: 15s
 
   jobLabel: spring-rest
   namespaceSelector:
