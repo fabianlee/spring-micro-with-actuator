@@ -19,12 +19,21 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Operation(summary = "get list of users")
-    @ApiResponse(responseCode = "200", description = "list returned")
-    @GetMapping
+    @ApiResponse(responseCode = "200")
+    @GetMapping(produces = "application/vnd.user.v1+json")
     public Iterable<User> findAllUsers() {
         Iterable<User> list = Arrays.asList(new User("moe"),new User("larry"));
         return list;
     }
+
+    @Operation(summary = "get list of users")
+    @ApiResponse(responseCode = "200")
+    @GetMapping(produces = "application/vnd.user.v2+json")
+    public Iterable<Userv2> findAllUsersv2() {
+        Iterable<Userv2> list = Arrays.asList(new Userv2("moe","fine"),new Userv2("larry","fine"));
+        return list;
+    }
+
 
 
 }
