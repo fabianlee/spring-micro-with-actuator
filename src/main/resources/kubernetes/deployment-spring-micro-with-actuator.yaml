@@ -17,6 +17,11 @@ spec:
         app: spring-micro-with-actuator
       annotations:
         sidecar.istio.io/inject: "false"
+        # these are for Prometheus stacks that use pod scraper, 'kube-prometheus-stack' does NOT !!!!
+        # instead use 'ServiceMonitor' CRD with label 'release-name: prom' as specified by 'Prometheus' CRD
+        #prometheus.io/scrape: 'true'
+        #prometheus.io/path: '/actuator/prometheus-custom'
+        #prometheus.io/port: '8081'
     spec:
 
       containers:
@@ -61,8 +66,6 @@ spec:
           httpGet:
             path: /actuator/health
             port: 8081
-            #path: /
-            #port: 8080
           initialDelaySeconds: 20
           periodSeconds: 10
 
@@ -71,8 +74,6 @@ spec:
           httpGet:
             path: /actuator/health
             port: 8081
-            #path: /
-            #port: 8080
           initialDelaySeconds: 20 
           periodSeconds: 10
 

@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    # specified as matchLabel in 'Prometheus' CRD
+    release: prom-stack
+  name: spring-rest
+  namespace: default
+spec:
+  endpoints:
+  - path: /actuator/prometheus-custom
+    port: http-actuator
+    scheme: http
+    scrapeTimeout: 10s
+  jobLabel: spring-rest
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      app: spring-micro-with-actuator
