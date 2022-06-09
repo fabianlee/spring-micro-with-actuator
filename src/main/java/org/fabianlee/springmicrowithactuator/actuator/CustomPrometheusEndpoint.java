@@ -63,7 +63,7 @@ public class CustomPrometheusEndpoint {
         Collection<Product> productLowCount = productRepository.findProductWithLowInventoryCount();
         for ( Product p:productLowCount) {
             resultmap.put(
-                String.format("low_inventory_count{id=\"%d\",name=\"%s\"}",p.getId(),p.getName()),
+                String.format("low_inventory_count{pid=\"%d\",pname=\"%s\"}",p.getId(),p.getName()),
                 "" + p.getCount()
                 );
         }
@@ -78,7 +78,7 @@ public class CustomPrometheusEndpoint {
             // so use label to capture string
             // https://github.com/prometheus/prometheus/issues/2227
     if ( envKey.startsWith("JAVA_") || envKey.startsWith("K8S_"))
-                resultmap.put(String.format("%s{label=\"%s\"}",envKey,all_env.get(envKey).toString()),"0.0");
+                resultmap.put(String.format("%s{val=\"%s\"}",envKey,all_env.get(envKey).toString()),"0.0");
         }
 
         // render final set of prometheus formatted key/values using Thymeleaf text template

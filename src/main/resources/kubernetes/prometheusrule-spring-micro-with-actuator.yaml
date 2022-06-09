@@ -9,10 +9,12 @@ spec:
   groups:
   - name: spring-micro-with-actuator.rules
     rules:
-    - alert: Low inventory on product
+    - alert: LowProductInventory
       annotations:
-        description: product has reached low inventory levels
-        summary: low inventory, need to reorder product from supplier
+        title: low inventory on product {{ $labels.pname }}
+        # added summary to see if it would show up in email title
+        summary: low inventory on product {{ $labels.pname }}
+        description: product {{ $labels.pname }} has reached low inventory levels, only {{ $value }} left
       expr: low_inventory_count{job="spring-micro-with-actuator"}<3
       for: 1m
       labels:
