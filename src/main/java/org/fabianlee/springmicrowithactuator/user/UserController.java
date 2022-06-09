@@ -1,3 +1,9 @@
+/**
+ * Additional REST service at /user to test OpenDoc ability to support multiple endpoints
+ * 
+ * Using versioning through content negotiation (header)
+ * https://www.xmatters.com/blog/blog-four-rest-api-versioning-strategies/
+ */
 package org.fabianlee.springmicrowithactuator.user;
 
 import java.util.Arrays;
