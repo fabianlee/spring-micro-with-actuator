@@ -1,24 +1,10 @@
 # need to set 'ruleSelectorNilUsesHelmValues' in helm chart to false so helm annotations and labels not necessary
+# examples: https://alex.dzyoba.com/blog/prometheus-alerts/
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  annotations:
-    meta.helm.sh/release-name: prom-stack
-    meta.helm.sh/release-namespace: prom
-    prometheus-operator-validated: "true"
-  labels:
-    #app: kube-prometheus-stack
-    #release: prom-stack
-    app: kube-prometheus-stack
-    app.kubernetes.io/instance: prom-stack
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/version: 35.5.1
-    chart: kube-prometheus-stack-35.5.1
-    heritage: Helm
-    release: prom-stack
   name: spring-micro-with-actuator.rules
-  namespace: prom
+  namespace: default
 spec:
   groups:
   - name: spring-micro-with-actuator.rules
