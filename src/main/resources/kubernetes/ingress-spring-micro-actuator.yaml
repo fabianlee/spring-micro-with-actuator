@@ -26,7 +26,7 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "//metrics(/|$)(.*)"
+        path: "/metrics(/|$)(.*)"
         backend:
           service:
             name: spring-micro-with-actuator
