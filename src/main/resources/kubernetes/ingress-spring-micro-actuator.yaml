@@ -20,11 +20,13 @@ spec:
     secretName: tls-credential
   rules:
 
+  # did not necessarily need to change /actuator to /metrics
+  # but if we had multiple REST services, then being able to differentiate would be required
   - host: k3s.local
     http:
       paths:
       - pathType: Prefix
-        path: "/metrics(/|$)(.*)"
+        path: "//metrics(/|$)(.*)"
         backend:
           service:
             name: spring-micro-with-actuator

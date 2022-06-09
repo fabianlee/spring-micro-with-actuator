@@ -23,16 +23,23 @@ spec:
     http:
       paths:
 
-      // for main REST API controllers
+      # main REST API controllers
       - pathType: Prefix
-        path: /api
+        path: /api/product
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8080
+      - pathType: Prefix
+        path: /api/user
         backend:
           service:
             name: spring-micro-with-actuator
             port:
               number: 8080
 
-      // for OpenDocs Swagger UI
+      # for OpenDocs Swagger UI
       - pathType: Prefix
         path: /swagger-ui
         backend:
