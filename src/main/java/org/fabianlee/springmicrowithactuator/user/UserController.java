@@ -3,6 +3,9 @@
  * 
  * Using versioning through content negotiation (header)
  * https://www.xmatters.com/blog/blog-four-rest-api-versioning-strategies/
+ * 
+ * TODO: Look at GroupedOpenApi configuration object to have OpenDoc show versioning
+ * https://springdoc.org/#migrating-from-springfox
  */
 package org.fabianlee.springmicrowithactuator.user;
 
