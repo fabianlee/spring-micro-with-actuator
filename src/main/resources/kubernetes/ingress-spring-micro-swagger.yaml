@@ -30,7 +30,16 @@ spec:
             port:
               number: 8080
       - pathType: Prefix
-        path: "/v1/product/(v3/api-docs)/(swagger-config)"
+        #path: "/v1/product/(v3\\/api-docs)/(swagger-config)"
+        path: "/v1/product/(v3\\/api-docs)/(.*)"
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8080
+      - pathType: Prefix
+        #path: "/v1/product/(v3\\/api-docs)/(swagger-config)"
+        path: "/v1/product/(v3)/(api-docs)"
         backend:
           service:
             name: spring-micro-with-actuator

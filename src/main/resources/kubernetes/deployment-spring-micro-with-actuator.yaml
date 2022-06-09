@@ -39,6 +39,9 @@ spec:
         #- name: spring.profiles.active
         #  value: prod
 
+        #- name: ENV_API_URL
+        #  value: /v1/product/v3/api-docs/
+
           # pulling pod fields
         - name: K8S_node_name
           valueFrom:
