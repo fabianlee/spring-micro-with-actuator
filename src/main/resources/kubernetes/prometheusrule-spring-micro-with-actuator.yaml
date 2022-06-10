@@ -11,11 +11,9 @@ spec:
     rules:
     - alert: LowProductInventory
       annotations:
-        title: low inventory on product {{ $labels.pname }}
-        # added summary to see if it would show up in email title
-        summary: low inventory on product {{ $labels.pname }}
-        description: product {{ $labels.pname }} has reached low inventory levels, only {{ $value }} left
+        description: on {{ $externalLabels.cluster }}, product {{ $labels.pname }} has reached low inventory levels, only {{ $value }} left
+        remediation: login to {{ $externalLabels.env }} cluster {{ $externalLabels.cluster }} using jumpbox {{ $externalLabels.jumpbox }} and order more {{ $labels.pname }} using the /swagger-ui/index.html page
       expr: low_inventory_count{job="spring-micro-with-actuator"}<3
-      for: 1m
+      for: 10s # 1m
       labels:
         severity: critical
