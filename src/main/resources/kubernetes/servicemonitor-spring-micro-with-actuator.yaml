@@ -13,14 +13,14 @@ spec:
 
   # main Java Actuator metrics enabled by adding 'spring-boot-starter-actuator' dependency to Spring Boot
   - path: /actuator/prometheus
-    port: http-actuator
+    port: http-actuator-metrics
     scheme: http
     interval: 60s
 
   # custom Actuator metrics enabled by adding 'micrometer-registry-prometheus' dependency to Spring Boot
   # then creating CustomPrometheusEndpoint Bean as ControllerEndpoint
   - path: /actuator/prometheus-custom
-    port: http-actuator
+    port: http-actuator-metrics
     scheme: http
     interval: 15s
 
