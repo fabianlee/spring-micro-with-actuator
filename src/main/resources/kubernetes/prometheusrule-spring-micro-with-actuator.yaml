@@ -13,7 +13,9 @@ spec:
       annotations:
         description: on {{ $externalLabels.cluster }}, product {{ $labels.pname }} has reached low inventory levels, only {{ $value }} left
         remediation: login to {{ $externalLabels.env }} cluster {{ $externalLabels.cluster }} using jumpbox {{ $externalLabels.jumpbox }} and order more {{ $labels.pname }} using the /swagger-ui/index.html page
-      expr: low_inventory_count{job="spring-micro-with-actuator"}<3
+      # do not specify job so that all low_inventory_count sources are considered
+      # instead of specifying job="spring-micro-with-actuator" OR job="kubernetes-service-endpoints"
+      expr: low_inventory_count{}<3
       for: 10s # 1m
       labels:
         severity: critical
