@@ -101,11 +101,15 @@ docker stop spring-micro-with-actuator
 ```
 cd src/main/resources/kubernetes
 export VERSION=0.0.2-SNAPSHOT
+
+# create deployment and service
 envsubst < deployment-spring-micro-with-actuator.yaml | kubectl apply -f -
 kubectl get deployment spring-micro-with-actuator
 
-kubectl apply -f spring-micro-rest.yaml
-kubectl apply -f spring-micro-actuator.yaml
+# main ingress for end users of API
+kubectl apply -f ingress-spring-micro-rest.yaml
+# ingress to validate actuator metrics (would not be exposed in prod)
+kubectl apply -f ingress-spring-micro-actuator.yaml
 kubectl get ingress
 ```
 

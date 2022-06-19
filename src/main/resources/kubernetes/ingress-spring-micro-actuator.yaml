@@ -10,8 +10,12 @@ metadata:
     # allows http without forcing redirect to ssl
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
-    # remove prefix
-    nginx.ingress.kubernetes.io/rewrite-target: /actuator/$2
+    # annotation that tells prometheus additional scrape job to target
+    prometheus.io/path: /actuator/prometheus-custom
+    prometheus.io/scrape: "true"
+
+    # if switching context path
+    #nginx.ingress.kubernetes.io/rewrite-target: /actuator/$2
 
 spec:
   tls:
@@ -21,12 +25,14 @@ spec:
   rules:
 
   # did not necessarily need to change /actuator to /metrics
-  # but if we had multiple REST services, then being able to differentiate would be required
+  # but if we had multiple REST deployments, then being able to differentiate would be required
   - host: k3s.local
     http:
       paths:
       - pathType: Prefix
-        path: "/metrics(/|$)(.*)"
+        path: "/actuator"
+        # if wanting to switch out context path
+        #path: "/metrics(/|$)(.*)"
         backend:
           service:
             name: spring-micro-with-actuator

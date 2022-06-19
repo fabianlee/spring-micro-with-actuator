@@ -10,6 +10,7 @@ metadata:
     # allows http without forcing redirect to ssl
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
+    # no need for rewrite, no regex in prefix paths below
     #nginx.ingress.kubernetes.io/rewrite-target: /api/$2
 
 spec:
@@ -23,7 +24,7 @@ spec:
     http:
       paths:
 
-      # main REST API controllers
+      # main REST API controllers, exposed by Spring
       - pathType: Prefix
         path: /api/product
         backend:
@@ -39,7 +40,7 @@ spec:
             port:
               number: 8080
 
-      # for OpenDocs Swagger UI
+      # for OpenDocs Swagger UI and Swagger config
       - pathType: Prefix
         path: /swagger-ui
         backend:
