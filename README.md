@@ -3,7 +3,7 @@
 This is a small REST API built with the Spring Boot framework, to illustrate the use of:
 
 * OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)) for documentation and interactive testing
-* Exposing metrics via Actuator for Prometheus consumption
+* Exposing metrics via [Actuator](https://docs.spring.io/spring-boot/docs/2.5.6/reference/html/actuator.html) and [Micrometer](https://micrometer.io/docs/concepts) for Prometheus consumption
 * Testing custom ServiceMonitor and Prometheus alerts coming from service
 
 ## Domain Model
@@ -76,7 +76,7 @@ metrics to this endpoint by creating a Class that uses [constructor injection of
 
 ### JVM and custom metrics exposed at :8081/prometheus-custom:
 
-We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-custom' by using the [ControllerEndpoint annotation](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) are:
+We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-custom' by using the [ControllerEndpoint annotation](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java):
 
 * custom_number_of_sales - how many items have been sold since the service started
 * custom_total_revenue - the total dollar amount that has been sold using this service (any and all items)
