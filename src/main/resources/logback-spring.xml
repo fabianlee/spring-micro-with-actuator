@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+</configuration>
+<!--
+<configuration>
 
     <property name="LOGS" value="./logs" />
 
@@ -22,7 +25,6 @@
 
         <rollingPolicy
             class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 10 MegaBytes -->
             <fileNamePattern>${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
@@ -32,16 +34,15 @@
         </rollingPolicy>
     </appender>
     
-    <!-- LOG everything at INFO level -->
-    <root level="info">
+    <root level="warn">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.baeldung*" at TRACE level -->
-    <logger name="com.baeldung" level="trace" additivity="false">
+    <logger name="org.fabianlee.springmicrowithactuator.actuator" level="debug" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
 
 </configuration>
+-->

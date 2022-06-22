@@ -7,6 +7,7 @@ package org.fabianlee.springmicrowithactuator.product;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.fabianlee.springmicrowithactuator.actuator.MyMetricsCustomBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
@@ -35,11 +37,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    MyMetricsCustomBean myMetricsCustomBean;
+
     // live runtime metrics for number and amount of sales
     private final AtomicLong saleCounter = new AtomicLong();
     private final AtomicLong revenueCounter = new AtomicLong();
 
     public long getSaleCounter() {
+        logger.debug("getSalesCounter");
         return saleCounter.get();
     }
 
@@ -51,13 +57,19 @@ public class ProductController {
     @ApiResponse(responseCode = "200", description = "list returned")
     @GetMapping
     public Iterable<Product> findAllProducts() {
+        logger.debug("findAllProducts");
         return productService.findAll();
     }
 
+    @Timed(value="update.time",description="time to update",percentiles={0.5,0.9})
     @Operation(summary = "create or update product")
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> updateProduct(@Validated @RequestBody Product product) {
         productService.saveOrUpdate(product);
+
+        // update metrics reported via Actuator
+        myMetricsCustomBean.updateLowInventoryGauges();
+
         return ResponseEntity.ok().body(product);
     }
 
@@ -99,6 +111,9 @@ public class ProductController {
             saleCounter.getAndIncrement();
             // add price of item sold
             revenueCounter.getAndAdd((long) (product.get().getPrice() * 100));
+
+            // update metrics reported via Actuator
+            myMetricsCustomBean.updateLowInventoryGauges();
 
             return ResponseEntity.ok().body(product.get());
         } else {

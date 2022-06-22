@@ -5,8 +5,10 @@ package org.fabianlee.springmicrowithactuator.product;
 
 import java.util.Collection;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
