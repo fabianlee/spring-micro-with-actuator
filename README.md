@@ -108,10 +108,29 @@ kubectl get deployment spring-micro-with-actuator
 
 # main ingress for end users of API
 kubectl apply -f ingress-spring-micro-rest.yaml
-# ingress to validate actuator metrics (would not be exposed in prod)
+# ingress to validate actuator metrics on mgmt port (this would not be exposed in prod)
 kubectl apply -f ingress-spring-micro-actuator.yaml
 kubectl get ingress
 ```
+
+## Monitor with Prometheus Operator
+
+```
+cd src/main/resources/kubernetes
+
+# ServiceMonitor that picks up the three custom metric endpoints for this service
+# on main port: /metrics
+# on mgmt port: /prometheus, /prometheus-custom
+kubectl apply -f servicemonitor-spring-micro-with-actuator.yaml
+
+# rules for product low inventory counts
+kubectl apply -f prometheusrule-spring-micro-with-actuator.yaml
+
+# restart AlertManager so changes take affect
+kubectl rollout restart statefulsets alertmanager-prom-stack-kube-prometheus-alertmanager -n prom
+kubectl rollout status statefulset alertmanager-prom-stack-kube-prometheus-alertmanager -n prom
+```
+
 
 ## Project initially created using Spring Intializer
 
