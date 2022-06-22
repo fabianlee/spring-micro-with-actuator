@@ -84,7 +84,15 @@ We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-cus
 * custom_sys_env{key="%s",value="%s"} - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [K8S Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
 
 
-These values can be scraped using Prometheus, and configured to alert.  For example, Prometheus and AlertManager alert staff via a [PrometheusRule](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/kubernetes/prometheusrule-spring-micro-with-actuator.yaml) when a product is reaching low levels of inventory so that it can be reordered from Suppliers.
+### Prometheus and AlertManager rules
+
+Once these values are scraped using Prometheus, they can be configured to alert.  
+
+For example, Prometheus and AlertManager alert via a [PrometheusRule](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/kubernetes/prometheusrule-spring-micro-with-actuator.yaml) when a product is reaching low levels of inventory (<3 left) so that it can be reordered from Suppliers.
+
+```
+expr: low_inventory_count{}<3
+```
 
 
 ## Running as SpringBoot Jar for local development
