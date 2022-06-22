@@ -14,6 +14,18 @@ The domain model is a simple product inventory.  You have a list of [Products](h
 These objects are stored in an H2 in-memory database, using JPA for a simple [CrudRepository of Product](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/persistence/ProductRepository.java).  This database can be browsed with the h2-console web UI at:
 * http://localhost:8080/h2-console (jdbc url=jdbc:h2:mem:testdb; username=sa, password=&lt;empty&gt;)
 
+The [data.sql](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/data.sql) file populates the database at container startup.
+
+```
+insert into products (id,name,count,price) VALUES (1,'Wrist Watch7',113,24.95);
+insert into products (id,name,count,price) VALUES (2,'Coffee Cup',3,5.95);
+insert into products (id,name,count,price) VALUES (3,'T-shirt',40,29.99);
+insert into products (id,name,count,price) VALUES (4,'LCD Monitor',5,199.00);
+```
+
+The system considers a product in low inventory if the number left is less than 3.  For example, you can see below we start with 3 Coffe Cup, so if even one is purchased, 
+the system will consider this product in low inventory and send alerts.
+
 
 ## REST Service
 
@@ -31,17 +43,40 @@ These services can be invoked from a simple REST client or curl/wget, but they a
 
 ## Prometheus Metrics
 
-In addition to the main RestController being offered on port 8080, the Actuator metrics are exposed on port 8081
+This service exposes metrics from 3 different endpoints to illustrate multiple ways
+to achieve monitoring integration.
 
-* generic JVM metrics - http://localhost:8081/actuator/prometheus
-* REST service level metrics - http://localhost:8081/actuator/prometheus-custom
+* basic build metrics on main service port - http://localhost:8080/metrics
+* JVM and custom metrics using Actuator on mgmt port - http://localhost:8081/actuator/prometheus
+* REST service level metrics using custom Actuator endpoint on mgmt port - http://localhost:8081/actuator/prometheus-custom
 
-The service level metrics at ['/actuator/prometheus-custom'](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) are:
+### basic build metrics exposed at :8080/metrics:
+
+* spring_micro_with_actuator - set to 0.0, just to test for existence
+* management_server_port - pulled from application.properties, port where /actuator is exposed
+* spring_micro_with_actuator_info - multidimensional metric that pulls info from build.gradle for name, group, version
+
+### JVM and custom metrics exposed at :8081/prometheus:
+
+The 'micrometer-registry-prometheus:' package by default exposes many generic JVM level metrics such as memory and disk utilization at /promtheus.  We can add our own custom
+metrics to this endpoint by creating a Class that uses [constructor injection of the MeterRegistry](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/MyMetricsCustomBean.java).
+
 
 * number_of_sales - how many items have been sold since the service started
 * total_revenue - the total dollar amount that has been sold using this service (any and all items)
-* low_inventory_count{id=%d,name="%s"} - [tagged metric](https://sysdig.com/blog/prometheus-metrics/) that shows products whose count is less than 3
-* K8S_* - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
+* low_inventory_count{pid=%d,pname="%s"} - [tagged metric](https://sysdig.com/blog/prometheus-metrics/) that shows products whose count is less than 3
+* sys_env{key="%s",value="%s"} - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
+
+
+### JVM and custom metrics exposed at :8081/prometheus-custom:
+
+We can expose our own Actuator custom endpoint at '/actuator/prometheus-custom' by using the [ControllerEndpoint annotation](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) are:
+
+* custom_number_of_sales - how many items have been sold since the service started
+* custom_total_revenue - the total dollar amount that has been sold using this service (any and all items)
+* custom_low_inventory_count{pid=%d,pname="%s"} - [tagged metric](https://sysdig.com/blog/prometheus-metrics/) that shows products whose count is less than 3
+* custom_sys_env{key="%s",value="%s"} - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
+
 
 These values can be scraped using Prometheus, and configured to alert.  For example, alerts could be emailed to staff when a product is reaching low levels of inventory so that it can be reordered from Suppliers.
 
