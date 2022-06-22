@@ -1,10 +1,10 @@
 #  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
 
-This is a small REST API built with the Spring Boot framework, to illustrate use of the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)) for documentation and interactive testing.  
+This is a small REST API built with the Spring Boot framework, to illustrate the use of:
 
-Metrics are exposed in prometheus format from multiple endpoints to 
-
- REST documentation and interactive test page provided using 
+* OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)) for documentation and interactive testing
+* Exposing metrics via Actuator for Prometheus consumption
+* Testing custom ServiceMonitor and Prometheus alerts coming from service
 
 ## Domain Model
 
