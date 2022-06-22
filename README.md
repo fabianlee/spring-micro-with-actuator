@@ -86,9 +86,9 @@ We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-cus
 
 ### Prometheus and AlertManager rules
 
-Once these values are scraped using Prometheus, they can be configured to alert.  
+Once these values are scraped using Prometheus, they can be configured for alerts.
 
-For example, Prometheus and AlertManager alert via a [PrometheusRule](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/kubernetes/prometheusrule-spring-micro-with-actuator.yaml) when a product is reaching low levels of inventory (<3 left) so that it can be reordered from Suppliers.
+For example, here is the [PrometheusRule](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/kubernetes/prometheusrule-spring-micro-with-actuator.yaml) that triggers when a product is reaching low levels of inventory (<3 left).
 
 ```
 expr: low_inventory_count{}<3
