@@ -1,6 +1,10 @@
 #  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
 
-This is a small REST API using the Spring Boot framework, with REST documentation and interactive test page provided using the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)).  Metrics are exposed in prometheus format.
+This is a small REST API built with the Spring Boot framework, to illustrate use of the OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)) for documentation and interactive testing.  
+
+Metrics are exposed in prometheus format from multiple endpoints to 
+
+ REST documentation and interactive test page provided using 
 
 ## Domain Model
 
@@ -23,8 +27,10 @@ insert into products (id,name,count,price) VALUES (3,'T-shirt',40,29.99);
 insert into products (id,name,count,price) VALUES (4,'LCD Monitor',5,199.00);
 ```
 
-The system considers a product in low inventory if the number left is less than 3.  For example, you can see below we start with 3 Coffe Cup, so if even one is purchased, 
+The system considers a product in low inventory if there are less than 3 in stock.  For example, you can see we start with 3 Coffe Cups, so if even one is purchased, 
 the system will consider this product in low inventory and send alerts.
+
+If there are no items left in stock, the custom [ProductHealthIndicator](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/ProductHealthIndicator.java) will start reporting "DOWN", at http://localhost:8081/actuator/health.  When deployed in Kubernetes, this will cause the container to be marked unhealthy and restarted.
 
 
 ## REST Service
