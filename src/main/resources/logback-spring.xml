@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-</configuration>
-<!--
-<configuration>
 
     <property name="LOGS" value="./logs" />
 
@@ -45,4 +42,3 @@
     </logger>
 
 </configuration>
--->

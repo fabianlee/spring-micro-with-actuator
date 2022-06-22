@@ -1,4 +1,4 @@
 my_static_value 1.01
-foo_value [[${{foo}}]][# th:each="metric : ${metrics}"]
+foo_value [[${{custom_foo}}]][# th:each="metric : ${metrics}"]
 [(${metric.key})] [(${metric.value})]
 [/]

@@ -1,3 +1,7 @@
+#
+# UNUSED: wanted to explore updating the absolute minimal set of classes that were 
+# recompiled, but the image build was taking just as much time.
+#
 FROM openjdk:19-slim-buster as builder
 COPY <%=name%>-<%=version%>.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract

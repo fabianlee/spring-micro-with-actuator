@@ -40,6 +40,11 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+// puts
+springBoot {
+    buildInfo()
+}
+
 // hot copies modified resource files
 task reload(type: Copy) {
     from 'src/main/resources'

@@ -11,6 +11,12 @@ metadata:
 spec:
   endpoints:
 
+  # basic set of metrics exposed at main /metrics
+  - path: /metrics
+    port: http
+    scheme: http
+    interval: 60s
+
   # main Java Actuator metrics enabled by adding 'spring-boot-starter-actuator' dependency to Spring Boot
   - path: /actuator/prometheus
     port: http-actuator-metrics

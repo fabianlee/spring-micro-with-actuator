@@ -14,9 +14,9 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 # run as non-root
 USER spring:spring
 
-# main service /api/product and /swagger-ui/index.html
+# main service: /api/product, /swagger-ui/index.html, /metrics
 EXPOSE 8080
-# actuator metrics /actuator/prometheus-custom and /actuator/prometheus
+# actuator metrics /actuator/prometheus, /actuator/prometheus-custom
 EXPOSE 8081
 
 COPY <%=name%>-<%=version%>.jar app.jar

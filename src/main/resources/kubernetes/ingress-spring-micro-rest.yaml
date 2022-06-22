@@ -39,6 +39,14 @@ spec:
             name: spring-micro-with-actuator
             port:
               number: 8080
+      # set of metrics to be auto-picked up by Prometheus
+      - pathType: Prefix
+        path: /metrics
+        backend:
+          service:
+            name: spring-micro-with-actuator
+            port:
+              number: 8080
 
       # for OpenDocs Swagger UI and Swagger config
       - pathType: Prefix

@@ -83,7 +83,7 @@ metadata:
     app: spring-micro-with-actuator
   annotations:
     # set to true if you want our custom prometheus scraper to gather custom metrics
-    prometheus.io/path: /actuator/prometheus-custom
+    prometheus.io/path: /actuator/prometheus
     prometheus.io/scrape: "false"
 spec:
   ports:

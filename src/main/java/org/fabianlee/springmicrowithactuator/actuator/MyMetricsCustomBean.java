@@ -7,7 +7,11 @@ import io.micrometer.core.instrument.Tags;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -46,8 +50,9 @@ public class MyMetricsCustomBean {
     protected ProductRepository productRepository;
     
 
-    // multigauge counts for low inventory
+    // multigauge for low inventory (dimensions on pid and pname)
     MultiGauge lowInventoryCounts = null;
+    // multigauge for environment keys (dimensions on key and value)
     MultiGauge sysEnvKeys = null;
 
     public void setSysEnvKeys() {
@@ -61,14 +66,11 @@ public class MyMetricsCustomBean {
             ).collect(Collectors.toList()
             )
         ,overWrite);
+
     }
 
     public void updateLowInventoryGauges() {
         boolean overWrite = true;
-        if(productRepository==null) {
-            logit("not updating low inventory gauges yet because productRepository is null");
-            return;
-        }
 
         // create MultiGauge.Row for each product with low inventory count
         lowInventoryCounts.register(
@@ -106,7 +108,6 @@ public class MyMetricsCustomBean {
             description("foo descrip").
             register(registry);
 
-
         // dynamic metrics from controller
         Gauge.builder("number.of.sales",fetchSalesCounter()).register(registry);
         Gauge.builder("total.revenue",fetchRevenueCounter()).register(registry);
@@ -115,10 +116,27 @@ public class MyMetricsCustomBean {
         // rely on updateLowInventoryGauges() to populate because data is not available here
         lowInventoryCounts = MultiGauge.builder("low.inventory.count").tag("pid","pname").register(registry);
 
-        // dynamically sized from environment keys
+        // multi-dimenstional environment keys
         sysEnvKeys = MultiGauge.builder("sys.env").tag("key","value").register(registry);
         // can immediately populate system env keys because they will not change
         setSysEnvKeys();
+
+        // creating same multidimensional env keys, but adding each Gauge separately
+        // easier syntax but only works when values are static and available by constructor
+/*        
+        Map<String, String> all_env = System.getenv();
+        for(Iterator<String> it = all_env.keySet().iterator(); it.hasNext(); ) {
+            String key = it.next();
+            if ( key.startsWith("JAVA_") || key.startsWith("K8S_") || key.startsWith("XDG_") ) {
+                Gauge.builder("new.sys.env",()->Double.valueOf(0.0)).
+                tag("key","key"+key).
+                tag("value",""+all_env.get(key)).
+                register(registry);
+            }
+        }
+*/        
+        
+
 
     } // constructor
 

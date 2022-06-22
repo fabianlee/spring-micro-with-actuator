@@ -37,6 +37,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    // used to update metrics
     @Autowired
     MyMetricsCustomBean myMetricsCustomBean;
 
