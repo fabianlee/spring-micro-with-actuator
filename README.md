@@ -28,7 +28,7 @@ insert into products (id,name,count,price) VALUES (4,'LCD Monitor',5,199.00);
 ```
 
 The system considers a product in low inventory if there are less than 3 in stock.  For example, you can see we start with 3 Coffe Cups, so if even one is purchased, 
-the system will consider this product in low inventory and send alerts.
+the system will consider this product in low inventory and send alerts. 
 
 If there are no items left in stock, the custom [ProductHealthIndicator](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/ProductHealthIndicator.java) will start reporting "DOWN", at http://localhost:8081/actuator/health.  When deployed in Kubernetes, this will cause the container to be marked unhealthy and restarted.
 
