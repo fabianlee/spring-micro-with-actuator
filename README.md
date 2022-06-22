@@ -28,9 +28,9 @@ insert into products (id,name,count,price) VALUES (4,'LCD Monitor',5,199.00);
 ```
 
 The system considers a product in low inventory if there are less than 3 in stock.  For example, you can see we start with 3 Coffe Cups, so if even one is purchased, 
-the system will consider this product in low inventory and send alerts. 
+the system will consider this product in low inventory and send alerts.
 
-If there are no items left in stock, the custom [ProductHealthIndicator](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/ProductHealthIndicator.java) will start reporting "DOWN", at http://localhost:8081/actuator/health.  When deployed in Kubernetes, this will cause the container to be marked unhealthy and restarted.
+If there are no items left in stock, the custom [ProductHealthIndicator](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/ProductHealthIndicator.java) will start reporting "DOWN", at http://localhost:8081/actuator/health.  When deployed in Kubernetes, this will cause the container to be marked unhealthy and restarted since this is its [healthcheck](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/kubernetes/deployment-spring-micro-with-actuator.yaml#L62https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/kubernetes/deployment-spring-micro-with-actuator.yaml#L62).
 
 
 ## REST Service
@@ -43,51 +43,51 @@ The [REST service](https://github.com/fabianlee/spring-micro-with-actuator/blob/
 * PUT /api/product - create or update a product
 * POST /api/product/{id}/sale - create a sale record for specific product
 
-These services can be invoked from a simple REST client or curl/wget, but they are also self-documented and exposed from the integrated OpenAPI documentation (Swagger):
+These services can be invoked from a simple REST client or curl/wget, but they are also self-documented and exposed from the OpenAPI documentation (Swagger) coming from the 'springdoc-openapi-ui' project dependency.
 
 * http://localhost:8080/swagger-ui/index.html
 
 ## Prometheus Metrics
 
 This service exposes metrics from 3 different endpoints to illustrate multiple ways
-to achieve monitoring integration.
+to achieve Prometheus monitoring integration.
 
 * basic build metrics on main service port - http://localhost:8080/metrics
 * JVM and custom metrics using Actuator on mgmt port - http://localhost:8081/actuator/prometheus
-* REST service level metrics using custom Actuator endpoint on mgmt port - http://localhost:8081/actuator/prometheus-custom
+* Service level metrics using custom Actuator endpoint on mgmt port - http://localhost:8081/actuator/prometheus-custom
 
 ### basic build metrics exposed at :8080/metrics:
 
-* spring_micro_with_actuator - set to 0.0, just to test for existence
-* management_server_port - pulled from application.properties, port where /actuator is exposed
-* spring_micro_with_actuator_info - multidimensional metric that pulls info from build.gradle for name, group, version
+* spring_micro_with_actuator - set to 0.0, simply there to test for existence
+* management_server_port - pulled from [application.properties](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/application.properties), port where /actuator is exposed
+* spring_micro_with_actuator_info - multidimensional metric that pulls info from [build.gradle](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/build.gradle) for name, group, version
 
 ### JVM and custom metrics exposed at :8081/prometheus:
 
-The 'micrometer-registry-prometheus:' package by default exposes many generic JVM level metrics such as memory and disk utilization at /promtheus.  We can add our own custom
+The 'micrometer-registry-prometheus' package by default exposes many generic JVM level metrics such as memory and disk utilization at :8081/prometheus.  We can add our own custom
 metrics to this endpoint by creating a Class that uses [constructor injection of the MeterRegistry](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/MyMetricsCustomBean.java).
 
 
 * number_of_sales - how many items have been sold since the service started
 * total_revenue - the total dollar amount that has been sold using this service (any and all items)
 * low_inventory_count{pid=%d,pname="%s"} - [tagged metric](https://sysdig.com/blog/prometheus-metrics/) that shows products whose count is less than 3
-* sys_env{key="%s",value="%s"} - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
+* sys_env{key="%s",value="%s"} - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [K8S Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
 
 
 ### JVM and custom metrics exposed at :8081/prometheus-custom:
 
-We can expose our own Actuator custom endpoint at '/actuator/prometheus-custom' by using the [ControllerEndpoint annotation](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) are:
+We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-custom' by using the [ControllerEndpoint annotation](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/java/org/fabianlee/springmicrowithactuator/actuator/CustomPrometheusEndpoint.java) are:
 
 * custom_number_of_sales - how many items have been sold since the service started
 * custom_total_revenue - the total dollar amount that has been sold using this service (any and all items)
 * custom_low_inventory_count{pid=%d,pname="%s"} - [tagged metric](https://sysdig.com/blog/prometheus-metrics/) that shows products whose count is less than 3
-* custom_sys_env{key="%s",value="%s"} - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
+* custom_sys_env{key="%s",value="%s"} - any environment values that start with 'K8S_', useful to capture environment vars such as 'K8S_node_name' that are passed via [K8S Downward API](https://fabianlee.org/2021/05/01/kubernetes-using-the-downward-api-to-access-pod-container-metadata/)
 
 
-These values can be scraped using Prometheus, and configured to alert.  For example, alerts could be emailed to staff when a product is reaching low levels of inventory so that it can be reordered from Suppliers.
+These values can be scraped using Prometheus, and configured to alert.  For example, Prometheus and AlertManager alert staff via a [PrometheusRule](https://github.com/fabianlee/spring-micro-with-actuator/blob/main/src/main/resources/kubernetes/prometheusrule-spring-micro-with-actuator.yaml) when a product is reaching low levels of inventory so that it can be reordered from Suppliers.
 
 
-## Running Application on local development server
+## Running as SpringBoot Jar for local development
 
 ```
 #
@@ -117,18 +117,21 @@ These values can be scraped using Prometheus, and configured to alert.  For exam
 # push to Docker Hub
 ./gradlew bootJar dockerPush
 
+
+export VERSION=0.0.2-SNAPSHOT
+
 # run in foreground
 ./gradlew dockerRun
 OR
-docker run -it -p 8080:8080 -p 8081:8081 --rm fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT /bin/bash
+docker run -it -p 8080:8080 -p 8081:8081 --rm fabianlee/spring-micro-with-actuator:$VERSION /bin/bash
 
 # run in background
-docker run -d -p 8080:8080 -p 8081:8081 --rm --name spring-micro-with-actuator fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT
+docker run -d -p 8080:8080 -p 8081:8081 --rm --name spring-micro-with-actuator fabianlee/spring-micro-with-actuator:$VERSION
 
 # create new running container, but go to shell instead of server being run
-docker run -it --rm --entrypoint /bin/bash fabianlee/spring-micro-with-actuator:0.0.2-SNAPSHOT
+docker run -it --rm --entrypoint /bin/bash fabianlee/spring-micro-with-actuator:$VERSION
 
-# get inside of daemonized container where server is being run
+# examine inside of daemonized container where server is being run
 docker exec -it spring-micro-with-actuator /bin/bash
 
 # stop container
@@ -142,6 +145,7 @@ docker stop spring-micro-with-actuator
 ```
 cd src/main/resources/kubernetes
 export VERSION=0.0.2-SNAPSHOT
+echo "Using KUBECONFIG $KUBECONFIG"
 
 # create deployment and service
 envsubst < deployment-spring-micro-with-actuator.yaml | kubectl apply -f -
