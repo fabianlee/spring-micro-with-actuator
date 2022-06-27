@@ -6,10 +6,10 @@ package org.fabianlee.springmicrowithactuator.product;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.fabianlee.springmicrowithactuator.actuator.MyMetricsCustomBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.fabianlee.springmicrowithactuator.actuator.MyMetricsCustomBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

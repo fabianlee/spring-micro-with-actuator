@@ -36,9 +36,9 @@
         <appender-ref ref="Console" />
     </root>
 
-    <logger name="org.fabianlee.springmicrowithactuator.actuator" level="debug" additivity="false">
-        <appender-ref ref="RollingFile" />
+    <logger name="org.fabianlee.springmicrowithactuator" level="debug" additivity="false">
         <appender-ref ref="Console" />
+        <appender-ref ref="RollingFile" />
     </logger>
 
 </configuration>

@@ -5,21 +5,16 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.MultiGauge;
 import io.micrometer.core.instrument.Tags;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.fabianlee.springmicrowithactuator.product.Product;
 import org.fabianlee.springmicrowithactuator.product.ProductController;
 import org.fabianlee.springmicrowithactuator.product.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -28,16 +23,6 @@ import org.springframework.stereotype.Component;
 public class MyMetricsCustomBean {
 
     Logger logger = LoggerFactory.getLogger(MyMetricsCustomBean.class);
-
-    public void logit(String s) {
-        try {
-            FileWriter fw = new FileWriter("/tmp/fw.log", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(s);
-            bw.newLine();
-            bw.close();
-        }catch(Exception exc) {}
-    }
 
     // REST controller for metrics
     @Lazy
