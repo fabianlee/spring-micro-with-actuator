@@ -1,9 +1,5 @@
 /**
- * Custom metrics for REST service
- * 
- * Metrics can be manually checked for syntax using promtool
- * kubectl exec -it -n prom statefulset/prometheus-prom-stack-kube-prometheus-prometheus -c prometheus -- sh
-  * echo -e "mymetric 1.0\nanother 2.0" | promtool check metrics
+ * Simple custom actuator endpoint
  */
 package org.fabianlee.springmicrowithactuator.actuator;
 
@@ -25,11 +21,13 @@ public class SimpleCustomEndpoint {
         keys.put("mykey","myval");
     }
 
+    // web request to /actuator/simple
     @ReadOperation
     public Map<String,String> doRead() {
         return keys;
     }
 
+    // web request to /actuator/simple/<pathName>
     @ReadOperation
     public String doReadAtPath(@Selector String pathName) {
         return "hello at " + pathName;
