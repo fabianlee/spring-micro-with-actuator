@@ -18,6 +18,7 @@ import org.fabianlee.springmicrowithactuator.product.Product;
 import org.fabianlee.springmicrowithactuator.product.ProductController;
 import org.fabianlee.springmicrowithactuator.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

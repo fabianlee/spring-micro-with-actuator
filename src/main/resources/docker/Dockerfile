@@ -1,8 +1,6 @@
 FROM openjdk:19-slim-buster
-# set default shell to bash (instead of /bin/sh)
-#SHELL ["/bin/bash","-c"]
 
-# create non-root ID
+# create non-root user and group
 # -l and static IDs assigned to avoid delay in lookups and system logging
 ARG THE_USER_ID=1001
 ARG THE_GROUP_ID=1001
