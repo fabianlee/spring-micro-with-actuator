@@ -2,7 +2,6 @@ plugins {
 	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	// docker image build and run, https://tomgregory.com/automating-docker-builds-with-gradle/
 	// https://plugins.gradle.org/plugin/com.palantir.docker
     id 'com.palantir.docker' version '0.33.0'
 	id "com.palantir.docker-run" version "0.33.0"
@@ -12,6 +11,7 @@ group = 'org.springframework.boot'
 version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
+def dockerOwner = 'fabianlee'
 
 repositories {
 	mavenCentral()
@@ -40,7 +40,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// puts
+// makes BuildProperties available from Spring context
 springBoot {
     buildInfo()
 }
@@ -75,7 +75,7 @@ dockerPrepare.dependsOn prepareDockerfileTemplate
 // palantir plugin that handles docker build
 // https://github.com/palantir/gradle-docker
 docker {
-    name "fabianlee/${project.name}:${project.version}" 
+    name "${dockerOwner}/${project.name}:${project.version}" 
 	files "$buildDir/libs/${project.name}-${project.version}.jar"
     dockerfile file("$buildDir/Dockerfile")
 }
@@ -84,7 +84,7 @@ docker {
 // https://github.com/palantir/gradle-docker
 dockerRun {
     name "${project.name}"
-    image "fabianlee/${project.name}:${project.version}"
+    image "${dockerOwner}/${project.name}:${project.version}"
     ports '8080:8080','8081:8081'
     clean true
 	daemonize false

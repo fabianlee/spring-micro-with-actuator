@@ -194,12 +194,13 @@ id=spring-micro-with-actuator
 artifact_id="${id//-}"
 SpringAppClassName=SpringMicroMain
 version="0.0.2-SNAPSHOT"
+groupId="org.fabianlee"
 curl https://start.spring.io/starter.zip \
-    -d type=maven-project|gradle-project
+    -d type=gradle-project \
     -d dependencies=web,prometheus,devtools,actuator,thymeleaf,h2,data-jpa \
     -d javaVersion=11 \
     -d bootVersion=2.7.0 \
-    -d groupId=org.fabianlee \
+    -d groupId=$groupId \
     -d artifactId=$artifact_id \
     -d name=$SpringAppClassName \
     -d baseDir=$id \
