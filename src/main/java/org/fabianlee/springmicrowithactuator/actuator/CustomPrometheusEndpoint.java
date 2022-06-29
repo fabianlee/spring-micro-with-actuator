@@ -46,7 +46,7 @@ public class CustomPrometheusEndpoint {
     DecimalFormat decimalFormat = new DecimalFormat("####0.00");
 
     @GetMapping(value="/", produces = MediaType.TEXT_PLAIN_VALUE)
-    public @ResponseBody String customEndPoint(){
+    public @ResponseBody String customEndPoint() {
         final Context theContext = new Context();
 
         // hardcoded metric
