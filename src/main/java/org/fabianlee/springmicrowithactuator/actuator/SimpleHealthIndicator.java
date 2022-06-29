@@ -14,13 +14,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleHealthIndicator implements HealthIndicator {
-    
+
+    // always reports UP
     @Override
     public Health health() {
         Map<String,String> map = new HashMap<String,String>();
         map.put("foo","bar");
         map.put("my","value");
         return new Health.Builder().up().withDetail("simple", map).build();
+        //return new Health.Builder().down().withDetail("simple", map).build();
     }
 
 }

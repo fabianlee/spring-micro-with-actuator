@@ -27,8 +27,10 @@ public class ProductHealthIndicator implements HealthIndicator {
     public Health health() {
         int lowestCount = Integer.MAX_VALUE;
 
+        // holds list of Product with low inventory count
         Map<String,Integer> productCounts = new HashMap<String,Integer>();
-        for (Product p:productRepository.findAll()) {
+
+        for (Product p:productRepository.findProductWithLowInventoryCount()) {
             productCounts.put(p.getName(),Integer.valueOf(p.getCount()));
 
             // find lowest inventory count
