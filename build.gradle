@@ -70,7 +70,9 @@ task prepareDockerfileTemplate(type: Copy) {
     into "$buildDir"
 }
 // add explicit dependency, otherwise we get warning at console
-dockerPrepare.dependsOn prepareDockerfileTemplate
+dockerPrepare.dependsOn bootJar
+bootJar.dependsOn prepareDockerfileTemplate
+bootJarMainClassName.dependsOn prepareDockerfileTemplate
 
 // palantir plugin that handles docker build
 // https://github.com/palantir/gradle-docker
