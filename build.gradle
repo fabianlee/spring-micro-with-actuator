@@ -73,6 +73,7 @@ task prepareDockerfileTemplate(type: Copy) {
 dockerPrepare.dependsOn bootJar
 bootJar.dependsOn prepareDockerfileTemplate
 bootJarMainClassName.dependsOn prepareDockerfileTemplate
+bootRunMainClassName.dependsOn prepareDockerfileTemplate
 
 // palantir plugin that handles docker build
 // https://github.com/palantir/gradle-docker
