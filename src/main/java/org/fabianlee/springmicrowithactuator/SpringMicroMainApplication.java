@@ -15,13 +15,5 @@ public class SpringMicroMainApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringMicroMainApplication.class, args);
 	}
-
-	// https://www.tutorialworks.com/spring-boot-prometheus-micrometer/
-	// https://github.com/monodot/spring-boot-with-metrics/tree/main/src/main/java/com/tutorialworks/demos/springbootwithmetrics
-	// for @Timed methods
-	@Bean
-	public TimedAspect timedAspect(MeterRegistry registry) {
-		return new TimedAspect();
-	}
-
+	
 }
