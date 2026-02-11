@@ -1,6 +1,8 @@
-#  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
+#  Spring Boot 2.7 REST microservice with OpenAPI docs and exported Prometheus metrics
 
-This is a small REST API built with the Spring Boot framework, to illustrate the use of:
+# If you want to see an updated Spring Boot 4 version of this project, see my newer GitHub project [spring-boot-rest-with-actuator](https://github.com/fabianlee/spring-boot-rest-with-actuator).
+
+This is a small REST API built with the Spring Boot 2.7 framework, to illustrate the use of:
 
 * OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)) for documentation and interactive testing
 * Exposing metrics via [Actuator](https://docs.spring.io/spring-boot/docs/2.5.6/reference/html/actuator.html) and [Micrometer](https://micrometer.io/docs/concepts) for Prometheus consumption
